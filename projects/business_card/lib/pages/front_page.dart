@@ -30,7 +30,8 @@ class _Front_PageState extends State<Front_Page> {
     return Scaffold(
       backgroundColor: Colors.grey[700],
       body: SafeArea(
-        child: Container(
+        child:
+        Container(
             child: Column(
           // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -63,8 +64,9 @@ class _Front_PageState extends State<Front_Page> {
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(screenWidth / 4, 20, 0, 0),
-              alignment: Alignment.topLeft,
+              // margin: EdgeInsets.all(),
+              margin: EdgeInsets.fromLTRB(screenWidth / 4, 0, 0, 0),
+              alignment: Alignment.bottomLeft,
               // color: Colors.green,
               height: screenHeight / 4 * 2,
               child: Column(
@@ -189,7 +191,8 @@ class _Front_PageState extends State<Front_Page> {
               child: null,
             ),
           ],
-        )),
+        )
+        ),
       ),
     );
   }
