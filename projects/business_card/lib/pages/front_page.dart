@@ -22,10 +22,10 @@ class _Front_PageState extends State<Front_Page> {
         nameEnglish: 'Anson Chiu',
         phoneNumber: '0919xxxxxx',
         email: 'anson@xxxxxx.com',
-        textAddress: '臺北市大安區xxxxxxxxxx',
+        textAddress: '臺北市大安區仁愛路4段34號2樓',
         mapAddressUrl:
             'https://www.google.com/maps/place/106%E5%8F%B0%E5%8C%97%E5%B8%82%E5%A4%A7%E5%AE%89%E5%8D%80%E4%BB%81%E6%84%9B%E8%B7%AF%E5%9B%9B%E6%AE%B534%E8%99%9F/@25.0376287,121.5445262,17.02z/data=!4m5!3m4!1s0x3442abd1b90caf7d:0x58fda1f5e21f4033!8m2!3d25.0376304!4d121.5467245',
-        taxID: '828xxxxx');
+        taxID: '82xxxxxx');
   }
 
   @override
@@ -64,7 +64,7 @@ Widget portraitLayout(double screenWidth, double screenHeight) {
               children: [
                 IconButton(
                   icon: Image.asset('assets/AemassBanner_1024_light.png'),
-                  iconSize: 110,
+                  iconSize: 90,
                   onPressed: () async {
                     openBrowserByURL(businessCardInfo.companyOfficialWeb);
                   },
@@ -218,10 +218,162 @@ Widget portraitLayout(double screenWidth, double screenHeight) {
 
 Widget landscapeLayout(double screenWidth, double screenHeight) {
   return Scaffold(
-      backgroundColor: Colors.green,
-      body: SafeArea(
-        child: Container(),
-      ));
+    backgroundColor: Colors.grey[700],
+    body: SafeArea(
+      child: Container(
+        child: Row(
+          children: <Widget>[
+            Flexible(
+              flex: 1,
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: screenHeight / 4),
+                alignment: Alignment.center,
+                // color: Colors.amber,
+                child: Column(
+                  children: [
+                    IconButton(
+                      icon: Image.asset('assets/AemassBanner_1024_light.png'),
+                      iconSize: 90,
+                      onPressed: () async {
+                        openBrowserByURL(businessCardInfo.companyOfficialWeb);
+                      },
+                    ),
+                    Text(
+                      businessCardInfo.companyName,
+                      style: TextStyle(
+                          color: Colors.grey[100],
+                          fontSize: 35,
+                          fontFamily: "Roboto",
+                          letterSpacing: 2),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: screenHeight / 5),
+                alignment: Alignment.center,
+                // color: Colors.green,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        businessCardInfo.jobTitle,
+                        style: TextStyle(
+                            color: Colors.grey[300],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            letterSpacing: 2,
+                            fontFamily: "Oswald"),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            businessCardInfo.nameChinese,
+                            style: TextStyle(
+                                color: Colors.grey[100],
+                                fontWeight: FontWeight.normal,
+                                fontSize: 30,
+                                letterSpacing: 2,
+                                fontFamily: "Oswald"),
+                          ),
+                          SizedBox(width: 16),
+                          Text(
+                            businessCardInfo.nameEnglish,
+                            style: TextStyle(
+                                color: Colors.grey[100],
+                                fontWeight: FontWeight.normal,
+                                fontSize: 21,
+                                letterSpacing: 2,
+                                fontFamily: "Oswald"),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Divider(
+                        color: Colors.grey[400],
+                      ),
+                      Wrap(
+                        direction: Axis.horizontal,
+                        runSpacing: 0,
+                        children: [
+                          FlatButton.icon(
+                              onPressed: () async {
+                                makeAPhoneCall(businessCardInfo.phoneNumber);
+                              },
+                              icon: Icon(
+                                Icons.phone,
+                                color: Colors.grey[200],
+                              ),
+                              label: Text(businessCardInfo.phoneNumber,
+                                  style: TextStyle(
+                                      color: Colors.grey[300],
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 18,
+                                      letterSpacing: 2,
+                                      fontFamily: "Oswald"))),
+                          FlatButton.icon(
+                              onPressed: () async {
+                                sendAEmail(businessCardInfo.email);
+                              },
+                              icon: Icon(
+                                Icons.mail,
+                                color: Colors.grey[200],
+                              ),
+                              label: Text(businessCardInfo.email,
+                                  style: TextStyle(
+                                      color: Colors.grey[300],
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 18,
+                                      letterSpacing: 2,
+                                      fontFamily: "Oswald"))),
+                          FlatButton.icon(
+                              onPressed: () async {
+                                openBrowserByURL(
+                                    businessCardInfo.mapAddressUrl);
+                              },
+                              icon: Icon(
+                                Icons.home,
+                                color: Colors.grey[200],
+                              ),
+                              label: Text(businessCardInfo.textAddress,
+                                  style: TextStyle(
+                                      color: Colors.grey[300],
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 14,
+                                      letterSpacing: 1,
+                                      fontFamily: "Oswald"))),
+                          FlatButton.icon(
+                              onPressed: null,
+                              icon: Icon(
+                                Icons.payment,
+                                color: Colors.grey[200],
+                              ),
+                              label: Text(businessCardInfo.taxID,
+                                  style: TextStyle(
+                                      color: Colors.grey[300],
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 16,
+                                      letterSpacing: 2,
+                                      fontFamily: "Oswald"))),
+                        ],
+                      ),
+                    ]),
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 void openBrowserByURL(String url) async {
