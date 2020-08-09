@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-// import 'dart:convert' show utf8;
 import 'dart:convert' as convert;
+import 'package:beautifulsoup/beautifulsoup.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,19 +33,38 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   // int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() async {
-      print("anson");
+  final _controller = TextEditingController();
 
-      var url = 'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=0050';
-      var response = await http.get(url);
-      // print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      // List<int> bytes = convert.base64Decode(response.body);
-      // String result = convert.utf8.decode(bytes);
-      // var encoded = utf8.encode(response.body);
-      // print(result);
-    });
+  Future<void> _incrementCounter() async {
+    // setState(() async {
+    print("anson");
+    print(_controller.text);
+
+    // var url = 'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=0050';
+    var url = 'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=' +
+        _controller.text;
+    var response = await http.get(url);
+
+    List<int> bytes = response.bodyBytes;
+    String result = convert.utf8.decode(bytes);
+
+    print(result);
+
+    // var soup = Beautifulsoup(result);
+    // var tables = soup.find_all("table").map((e) => (e.outerHtml)).toList();
+    // print(tables);
+
+    // print(soup.find_all("table").map((e) => (e.outerHtml)).toList());
+    // print(soup("title").outerHtml);
+    // print(soup("a").outerHtml); //soup.a
+    // print(soup("table").attributes["class"]);
+    // print(soup.get_text()); //soup.get_text()
+    // print(soup.find_all("table").map((e) => soup.attr(e, "class")).toList());
+    // print(soup.find(id: "#solid_1_padding_3_1_tbl"));
+    // print(soup("table").attributes["class"]);
+    // var table = soup.find();
+
+    // print(soup);
   }
 
   @override
@@ -59,6 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             TextField(
+              controller: _controller,
+              onChanged: (text) {
+                print("First text field: $text");
+              },
               inputFormatters: [
                 WhitelistingTextInputFormatter(RegExp("[0-9]")),
               ],
