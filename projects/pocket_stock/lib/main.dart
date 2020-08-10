@@ -36,8 +36,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final _controller = TextEditingController();
 
   Future<void> _incrementCounter() async {
-    // setState(() async {
-    print("anson");
     print(_controller.text);
 
     // var url = 'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=0050';
@@ -48,23 +46,20 @@ class _MyHomePageState extends State<MyHomePage> {
     List<int> bytes = response.bodyBytes;
     String result = convert.utf8.decode(bytes);
 
-    print(result);
+    var soup = Beautifulsoup(result);
 
-    // var soup = Beautifulsoup(result);
-    // var tables = soup.find_all("table").map((e) => (e.outerHtml)).toList();
-    // print(tables);
+    var classlinks = soup.find_all("table");
+    var element = classlinks.firstWhere(
+        (element) => element.className == "solid_1_padding_3_1_tbl");
 
-    // print(soup.find_all("table").map((e) => (e.outerHtml)).toList());
-    // print(soup("title").outerHtml);
-    // print(soup("a").outerHtml); //soup.a
-    // print(soup("table").attributes["class"]);
-    // print(soup.get_text()); //soup.get_text()
-    // print(soup.find_all("table").map((e) => soup.attr(e, "class")).toList());
-    // print(soup.find(id: "#solid_1_padding_3_1_tbl"));
-    // print(soup("table").attributes["class"]);
-    // var table = soup.find();
+    print("before: ");
+    print(element.text);
 
-    // print(soup);
+    var stockInfoList = element.text.split(" ");
+    stockInfoList.removeWhere((item) => item == "");
+
+    print("after : ");
+    print(stockInfoList);
   }
 
   @override
