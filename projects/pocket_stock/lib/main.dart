@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Stock Pocket'),
     );
   }
 }
@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // int _counter = 0;
 
   final _controller = TextEditingController();
+  String stockContent = "";
 
   Future<void> _incrementCounter() async {
     print(_controller.text);
@@ -55,11 +56,65 @@ class _MyHomePageState extends State<MyHomePage> {
     print("before: ");
     print(element.text);
 
-    var stockInfoList = element.text.split(" ");
+    List<String> stockInfoList = element.text.split(" ");
     stockInfoList.removeWhere((item) => item == "");
 
     print("after : ");
     print(stockInfoList);
+
+    // Bad progress
+    String strStockInfo = stockInfoList[2] +
+        "  " +
+        stockInfoList[10] +
+        "\n" +
+        stockInfoList[3] +
+        "  " +
+        stockInfoList[11] +
+        "\n" +
+        stockInfoList[4] +
+        "  " +
+        stockInfoList[12] +
+        "\n" +
+        stockInfoList[5] +
+        "  " +
+        stockInfoList[13] +
+        "\n" +
+        stockInfoList[6] +
+        "  " +
+        stockInfoList[14] +
+        "\n" +
+        stockInfoList[7] +
+        "  " +
+        stockInfoList[15] +
+        "\n" +
+        stockInfoList[8] +
+        "  " +
+        stockInfoList[16] +
+        "\n" +
+        stockInfoList[9] +
+        "  " +
+        stockInfoList[17] +
+        "\n";
+    // stockInfoList[18] + "  " + stockInfoList[26] + "\n" +
+    // stockInfoList[19] + "  " + stockInfoList[27] + "\n" +
+    // stockInfoList[20] + "  " + stockInfoList[28] + "\n" +
+    // stockInfoList[21] + "  " + stockInfoList[29] + "\n" +
+    // stockInfoList[22] + "  " + stockInfoList[30] + "\n" +
+    // stockInfoList[23] + "  " + stockInfoList[31] + "\n" +
+    // stockInfoList[24] + "  " + stockInfoList[32] + "\n" +
+    // stockInfoList[33] + "  " + stockInfoList[39] + "\n" +
+    // stockInfoList[34] + "  " + stockInfoList[40] + "\n" +
+    // stockInfoList[35] + "  " + stockInfoList[41] + "\n" +
+    // stockInfoList[36] + "  " + stockInfoList[42] + "\n" +
+    // stockInfoList[37] + "  " + stockInfoList[43] + "\n" +
+    // stockInfoList[38] + "  " + stockInfoList[44] + "\n" + ;
+
+    // for (int i = 2; i < stockInfoList.length; i++) {
+    //   print(i.toString() + "  " + stockInfoList[i]);
+    // }
+    setState(() {
+      stockContent = strStockInfo;
+    });
   }
 
   @override
@@ -80,8 +135,16 @@ class _MyHomePageState extends State<MyHomePage> {
               inputFormatters: [
                 WhitelistingTextInputFormatter(RegExp("[0-9]")),
               ],
-              decoration: InputDecoration(hintText: 'Enter a search stock ID'),
+              decoration: InputDecoration(hintText: 'Enter a stock ID'),
             ),
+            Text("$stockContent"),
+            // DataTable(columns: [
+            //   DataColumn(label: Text("Item")),
+            //   DataColumn(label: Text("Value")),
+            // ], rows: [
+            //   DataRow(cells: [DataCell(Text("data")), DataCell(Text("aaa"))]),
+            //   // DataRow(cells: [DataCell(Text("anson")), DataCell(Text('data'))]),
+            // ]),
           ],
         ),
       ),
