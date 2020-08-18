@@ -36,10 +36,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final _controller = TextEditingController();
   String stockContent = "";
 
-  Future<void> _incrementCounter() async {
-    print(_controller.text);
+  Future<void> getStockIDbyName() async {
+    print("getStockIDbyName");
+  }
 
-    // var url = 'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=0050';
+  Future<void> getStockInfoByID() async {
+    print(_controller.text);
     var url = 'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=' +
         _controller.text;
     var response = await http.get(url);
@@ -95,23 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
         "  " +
         stockInfoList[17] +
         "\n";
-    // stockInfoList[18] + "  " + stockInfoList[26] + "\n" +
-    // stockInfoList[19] + "  " + stockInfoList[27] + "\n" +
-    // stockInfoList[20] + "  " + stockInfoList[28] + "\n" +
-    // stockInfoList[21] + "  " + stockInfoList[29] + "\n" +
-    // stockInfoList[22] + "  " + stockInfoList[30] + "\n" +
-    // stockInfoList[23] + "  " + stockInfoList[31] + "\n" +
-    // stockInfoList[24] + "  " + stockInfoList[32] + "\n" +
-    // stockInfoList[33] + "  " + stockInfoList[39] + "\n" +
-    // stockInfoList[34] + "  " + stockInfoList[40] + "\n" +
-    // stockInfoList[35] + "  " + stockInfoList[41] + "\n" +
-    // stockInfoList[36] + "  " + stockInfoList[42] + "\n" +
-    // stockInfoList[37] + "  " + stockInfoList[43] + "\n" +
-    // stockInfoList[38] + "  " + stockInfoList[44] + "\n" + ;
-
-    // for (int i = 2; i < stockInfoList.length; i++) {
-    //   print(i.toString() + "  " + stockInfoList[i]);
-    // }
     setState(() {
       stockContent = strStockInfo;
     });
@@ -122,37 +107,115 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        backgroundColor: Colors.orange[600],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            TextField(
-              controller: _controller,
-              onChanged: (text) {
-                print("First text field: $text");
-              },
-              inputFormatters: [
-                WhitelistingTextInputFormatter(RegExp("[0-9]")),
+      body: ListView(
+        padding: const EdgeInsets.all(8),
+        children: <Widget>[
+          Container(
+            height: 130,
+            // color: Colors.amber[100],
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  controller: _controller,
+                  onChanged: (text) {
+                    print("$text");
+                  },
+                  decoration: InputDecoration(
+                      focusedErrorBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Colors.green,
+                        width: 5,
+                      )),
+                      icon: Icon(Icons.save),
+                      labelText: 'Enter a stock Name'),
+                ),
+                SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: IconButton(
+                        iconSize: 50,
+                        icon: Icon(Icons.search),
+                        onPressed: null))
               ],
-              decoration: InputDecoration(hintText: 'Enter a stock ID'),
             ),
-            Text("$stockContent"),
-            // DataTable(columns: [
-            //   DataColumn(label: Text("Item")),
-            //   DataColumn(label: Text("Value")),
-            // ], rows: [
-            //   DataRow(cells: [DataCell(Text("data")), DataCell(Text("aaa"))]),
-            //   // DataRow(cells: [DataCell(Text("anson")), DataCell(Text('data'))]),
-            // ]),
-          ],
-        ),
+          ),
+          Container(
+            height: 130,
+            // color: Colors.amber[100],
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  controller: _controller,
+                  onChanged: (text) {
+                    print("$text");
+                  },
+                  decoration: InputDecoration(
+                      icon: Icon(Icons.save), labelText: 'Enter a stock ID'),
+                ),
+                SizedBox(
+                    height: 50,
+                    width: 50,
+                    child: IconButton(
+                        iconSize: 50,
+                        icon: Icon(Icons.search),
+                        onPressed: null))
+              ],
+            ),
+          ),
+          Container(
+            height: 100,
+            // color: Colors.amber[600],
+            child: const Center(child: Text('Entry A')),
+          ),
+          Container(
+            height: 100,
+            // color: Colors.amber[500],
+            child: const Center(child: Text('Entry B')),
+          ),
+          Container(
+            height: 100,
+            // color: Colors.amber[100],
+            child: const Center(child: Text('Entry C')),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.search),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+// Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.start,
+//           children: <Widget>[
+//             TextField(
+//               controller: _controller,
+//               onChanged: (text) {
+//                 print("$text");
+//               },
+//               decoration: InputDecoration(hintText: 'Enter a stock Name'),
+//             ),
+//             IconButton(icon: Icon(Icons.search), onPressed: getStockIDbyName),
+//             TextField(
+//               controller: _controller,
+//               onChanged: (text) {
+//                 print("First text field: $text");
+//               },
+//               inputFormatters: [
+//                 WhitelistingTextInputFormatter(RegExp("[0-9]")),
+//               ],
+//               decoration: InputDecoration(hintText: 'Enter a stock ID'),
+//             ),
+//             IconButton(icon: Icon(Icons.search), onPressed: getStockInfoByID),
+//             Text("$stockContent"),
+//             // DataTable(columns: [
+//             //   DataColumn(label: Text("Item")),
+//             //   DataColumn(label: Text("Value")),
+//             // ], rows: [
+//             //   DataRow(cells: [DataCell(Text("data")), DataCell(Text("aaa"))]),
+//             //   // DataRow(cells: [DataCell(Text("anson")), DataCell(Text('data'))]),
+//             // ]),
+//           ],
+//         ),
+//       ),
