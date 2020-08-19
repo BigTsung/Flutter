@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:beautifulsoup/beautifulsoup.dart';
+import 'package:excel/excel.dart';
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:excel/excel.dart';
+import 'package:flutter/services.dart' show ByteData, rootBundle;
 
 void main() {
   runApp(MyApp());
@@ -38,6 +42,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> getStockIDbyName() async {
     print("getStockIDbyName");
+
+    ByteData data = await rootBundle.load("assets/StockList.xlsx");
+    var bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    var excel = Excel.decodeBytes(bytes);
+
+    for (var table in excel.tables.keys) {
+      print(table); //sheet Name
+      print(excel.tables[table].maxCols);
+      print(excel.tables[table].maxRows);
+      for (var row in excel.tables[table].rows) {
+        print("$row");
+      }
+    }
   }
 
   Future<void> getStockInfoByID() async {
@@ -107,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: Colors.orange[600],
+        backgroundColor: Colors.grey[600],
       ),
       body: ListView(
         padding: const EdgeInsets.all(8),
@@ -125,7 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: InputDecoration(
                       focusedErrorBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                        color: Colors.green,
+                        color: Colors.grey,
                         width: 5,
                       )),
                       icon: Icon(Icons.save),
@@ -137,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: IconButton(
                         iconSize: 50,
                         icon: Icon(Icons.search),
-                        onPressed: null))
+                        onPressed: getStockIDbyName))
               ],
             ),
           ),
