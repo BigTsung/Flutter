@@ -3,9 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:beautifulsoup/beautifulsoup.dart';
 import 'package:excel/excel.dart';
-import 'dart:io';
-import 'package:path/path.dart';
-import 'package:excel/excel.dart';
 import 'package:flutter/services.dart' show ByteData, rootBundle;
 
 void main() {
@@ -35,12 +32,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // int _counter = 0;
-
-  final _controller = TextEditingController();
+  final stockNamecontroller = TextEditingController();
+  final stockIDcontroller = TextEditingController();
   String stockContent = "";
 
-  Future<void> getStockIDbyName() async {
+  Future<void> initStockTable() async {
     print("getStockIDbyName");
 
     ByteData data = await rootBundle.load("assets/StockList.xlsx");
@@ -51,16 +47,16 @@ class _MyHomePageState extends State<MyHomePage> {
       print(table); //sheet Name
       print(excel.tables[table].maxCols);
       print(excel.tables[table].maxRows);
-      for (var row in excel.tables[table].rows) {
-        print("$row");
-      }
+      // for (var row in excel.tables[table].rows) {
+      //   print("$row");
+      // }
     }
   }
 
   Future<void> getStockInfoByID() async {
-    print(_controller.text);
+    print(stockNamecontroller.text);
     var url = 'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=' +
-        _controller.text;
+        stockNamecontroller.text;
     var response = await http.get(url);
 
     List<int> bytes = response.bodyBytes;
@@ -119,6 +115,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+// =======================================================
+// ====== InitState ======================================
+// =======================================================
+
+  @override
+  void initState() {
+    print("Init State!!");
+    initStockTable();
+    getThingsOnStartup().then((value) {
+      print("Initial Done!!");
+    });
+    super.initState();
+  }
+
+  Future getThingsOnStartup() async {
+    await Future.delayed(Duration(seconds: 10));
+  }
+
+// =======================================================
+// ======= build =========================================
+// =======================================================
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,11 +149,10 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Container(
             height: 130,
-            // color: Colors.amber[100],
             child: Column(
               children: <Widget>[
                 TextField(
-                  controller: _controller,
+                  controller: stockIDcontroller,
                   onChanged: (text) {
                     print("$text");
                   },
@@ -154,17 +171,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: IconButton(
                         iconSize: 50,
                         icon: Icon(Icons.search),
-                        onPressed: getStockIDbyName))
+                        onPressed: () {}))
               ],
             ),
           ),
           Container(
             height: 130,
-            // color: Colors.amber[100],
             child: Column(
               children: <Widget>[
                 TextField(
-                  controller: _controller,
+                  controller: stockNamecontroller,
                   onChanged: (text) {
                     print("$text");
                   },
@@ -177,25 +193,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: IconButton(
                         iconSize: 50,
                         icon: Icon(Icons.search),
-                        onPressed: null))
+                        onPressed: () {}))
               ],
             ),
           ),
-          Container(
-            height: 100,
-            // color: Colors.amber[600],
-            child: const Center(child: Text('Entry A')),
-          ),
-          Container(
-            height: 100,
-            // color: Colors.amber[500],
-            child: const Center(child: Text('Entry B')),
-          ),
-          Container(
-            height: 100,
-            // color: Colors.amber[100],
-            child: const Center(child: Text('Entry C')),
-          ),
+          // Container(
+          //   height: 100,
+          //   // color: Colors.amber[600],
+          //   child: const Center(child: Text('Entry A')),
+          // ),
+          // Container(
+          //   height: 100,
+          //   // color: Colors.amber[500],
+          //   child: const Center(child: Text('Entry B')),
+          // ),
+          // Container(
+          //   height: 100,
+          //   // color: Colors.amber[100],
+          //   child: const Center(child: Text('Entry C')),
+          // ),
         ],
       ),
     );
