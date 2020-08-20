@@ -31,26 +31,61 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class StockTable {
+  String name;
+  String id;
+
+  StockTable(this.name, this.id);
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   final stockNamecontroller = TextEditingController();
-  final stockIDcontroller = TextEditingController();
+  final getIDController = TextEditingController();
   String stockContent = "";
+  List stocks = [];
+  String stockName = "NORE";
 
   Future<void> initStockTable() async {
     print("getStockIDbyName");
 
-    ByteData data = await rootBundle.load("assets/StockList.xlsx");
+    ByteData data = await rootBundle.load("assets/ListedCompany.xlsx");
     var bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     var excel = Excel.decodeBytes(bytes);
 
     for (var table in excel.tables.keys) {
-      print(table); //sheet Name
-      print(excel.tables[table].maxCols);
-      print(excel.tables[table].maxRows);
-      // for (var row in excel.tables[table].rows) {
-      //   print("$row");
-      // }
+      for (List row in excel.tables[table].rows) {
+        String name = row[1].toString();
+        String id = row[0].toString();
+        stocks.add(StockTable(name, id));
+      }
     }
+
+    ByteData otcData =
+        await rootBundle.load("assets/OverTheCounterCompany.xlsx");
+    var otcBytes = otcData.buffer
+        .asUint8List(otcData.offsetInBytes, otcData.lengthInBytes);
+    var otcExcel = Excel.decodeBytes(otcBytes);
+
+    for (var table in otcExcel.tables.keys) {
+      for (List row in otcExcel.tables[table].rows) {
+        String name = row[1].toString();
+        String id = row[0].toString();
+        stocks.add(StockTable(name, id));
+      }
+    }
+  }
+
+  Future<void> getStockIDByName() async {
+    // print(getIDController.text);
+    int targetIndex =
+        stocks.indexWhere((element) => element.name == getIDController.text);
+    // print(targetIndex);
+    if (targetIndex > 0)
+      stockName = stocks[targetIndex].id;
+    else
+      stockName = "Nore";
+
+    print(stockName);
   }
 
   Future<void> getStockInfoByID() async {
@@ -152,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               children: <Widget>[
                 TextField(
-                  controller: stockIDcontroller,
+                  controller: getIDController,
                   onChanged: (text) {
                     print("$text");
                   },
@@ -171,7 +206,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: IconButton(
                         iconSize: 50,
                         icon: Icon(Icons.search),
-                        onPressed: () {}))
+                        onPressed: getStockIDByName))
               ],
             ),
           ),
@@ -197,6 +232,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
+          Container(
+            height: 100,
+            // color: Colors.amber[600],
+            child: const Center(child: Text('Name:')),
+          )
           // Container(
           //   height: 100,
           //   // color: Colors.amber[600],
