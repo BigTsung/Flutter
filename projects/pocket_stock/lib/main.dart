@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -38,12 +40,29 @@ class StockTable {
   StockTable(this.name, this.id);
 }
 
+class Stock {
+  String name;
+  String id;
+  Float eps;
+  Float closingPrice;
+
+  Stock(this.name, this.id, this.eps, this.closingPrice);
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   final stockNamecontroller = TextEditingController();
   final getIDController = TextEditingController();
   String stockContent = "";
   List stocks = [];
   String stockName = '';
+
+  List<DataRow> _stockList = [
+    // DataRow(cells: <DataCell>[
+    //   DataCell(Text('')),
+    //   DataCell(Text('')),
+    //   DataCell(Text('')),
+    // ]),
+  ];
 
   Future<void> initStockTable() async {
     print("getStockIDbyName");
@@ -89,9 +108,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> getStockInfoByID() async {
-    print(stockNamecontroller.text);
-    var url = 'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=' +
-        stockNamecontroller.text;
+    String stockID = stockNamecontroller.text;
+    var url =
+        'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=' + stockID;
     var response = await http.get(url);
 
     List<int> bytes = response.bodyBytes;
@@ -99,18 +118,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var soup = Beautifulsoup(result);
 
+    print(stockID);
+
     var classlinks = soup.find_all("table");
     var element = classlinks.firstWhere(
         (element) => element.className == "solid_1_padding_3_1_tbl");
 
-    print("before: ");
     print(element.text);
 
-    List<String> stockInfoList = element.text.split(" ");
+    String resultStr = element.text.replaceFirst("期貨標的選擇權標的資料日期:", "");
+
+    // resultStr.replaceFirst(stockID, "");
+    // print(resultStr);
+
+    List<String> stockInfoList = resultStr.split(" ");
     stockInfoList.removeWhere((item) => item == "");
 
-    print("after : ");
+    // print("after : ");
     print(stockInfoList);
+
+    _stockList.add(DataRow(cells: <DataCell>[
+      DataCell(Text(stockInfoList[0])),
+      DataCell(Text(stockID)),
+      DataCell(Text(stockInfoList[10])),
+    ]));
 
     // Bad progress
     String strStockInfo = stockInfoList[2] +
@@ -145,6 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
         "  " +
         stockInfoList[17] +
         "\n";
+
     setState(() {
       stockContent = strStockInfo;
     });
@@ -182,6 +214,13 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: <Widget>[
+          // Container(
+          //     height: 100,
+          //     // color: Colors.amber[600],
+          //     child: Text(
+          //       "Enter a stock name",
+          //       style: TextStyle(color: Colors.grey[800], fontSize: 30),
+          //     )),
           Container(
             height: 130,
             child: Column(
@@ -197,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         color: Colors.grey,
                         width: 5,
                       )),
-                      icon: Icon(Icons.save),
+                      prefixIcon: Icon(Icons.save),
                       labelText: 'Enter a stock Name'),
                 ),
                 SizedBox(
@@ -220,7 +259,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     print("$text");
                   },
                   decoration: InputDecoration(
-                      icon: Icon(Icons.save), labelText: 'Enter a stock ID'),
+                      prefixIcon: Icon(Icons.save),
+                      labelText: 'Enter a stock ID'),
                 ),
                 SizedBox(
                     height: 50,
@@ -232,12 +272,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          Text("$stockContent"),
-          // Container(
-          //   height: 100,
-          //   // color: Colors.amber[600],
-          //   child: const Center(child: Text("$stockContent")),
-          // ),
+          Container(
+            height: 130,
+            child: DataTable(columns: [
+              DataColumn(label: Text("名稱")),
+              DataColumn(label: Text("代號")),
+              DataColumn(label: Text("股價"))
+            ], rows: _stockList),
+          ),
         ],
       ),
     );
