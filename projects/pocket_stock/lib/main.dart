@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final getIDController = TextEditingController();
   String stockContent = "";
   List stocks = [];
-  String stockName = "NORE";
+  String stockName = '';
 
   Future<void> initStockTable() async {
     print("getStockIDbyName");
@@ -228,29 +228,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: IconButton(
                         iconSize: 50,
                         icon: Icon(Icons.search),
-                        onPressed: () {}))
+                        onPressed: getStockInfoByID))
               ],
             ),
           ),
-          Container(
-            height: 100,
-            // color: Colors.amber[600],
-            child: const Center(child: Text('Name:')),
-          )
+          Text("$stockContent"),
           // Container(
           //   height: 100,
           //   // color: Colors.amber[600],
-          //   child: const Center(child: Text('Entry A')),
-          // ),
-          // Container(
-          //   height: 100,
-          //   // color: Colors.amber[500],
-          //   child: const Center(child: Text('Entry B')),
-          // ),
-          // Container(
-          //   height: 100,
-          //   // color: Colors.amber[100],
-          //   child: const Center(child: Text('Entry C')),
+          //   child: const Center(child: Text("$stockContent")),
           // ),
         ],
       ),
