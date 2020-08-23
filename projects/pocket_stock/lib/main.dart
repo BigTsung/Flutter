@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final getIDController = TextEditingController();
   String stockContent = "";
   List stocks = [];
-  String stockName = '';
+  // String stockName = '';
 
   List<DataRow> _stockList = [
     // DataRow(cells: <DataCell>[
@@ -94,21 +94,44 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<void> getStockIDByName() async {
-    // print(getIDController.text);
-    int targetIndex =
-        stocks.indexWhere((element) => element.name == getIDController.text);
-    // print(targetIndex);
-    if (targetIndex > 0)
-      stockName = stocks[targetIndex].id;
-    else
-      stockName = "Nore";
-
-    print(stockName);
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.parse(s, (e) => null) != null ||
+        int.parse(s, onError: (e) => null) != null;
   }
 
-  Future<void> getStockInfoByID() async {
-    String stockID = stockNamecontroller.text;
+  Future<void> searchStock() async {
+    String input = stockNamecontroller.text;
+    print(isNumeric(input));
+    if (isNumeric(input)) {
+      getStockInfoByID(input);
+    } else {
+      print("input:" + input);
+      String stockID = getStockIDByName(input);
+      getStockInfoByID(stockID);
+      print(stockID.toString());
+    }
+  }
+
+  String getStockIDByName(String targetName) {
+    // print(getIDController.text);
+    String stockID;
+    int targetIndex =
+        stocks.indexWhere((element) => element.name == targetName);
+    // print(targetIndex);
+    if (targetIndex > 0)
+      stockID = stocks[targetIndex].id;
+    else
+      stockID = "Nore";
+
+    print(stockID);
+    return stockID;
+  }
+
+  Future<void> getStockInfoByID(String stockID) async {
+    // String stockID = stockNamecontroller.text;
     var url =
         'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=' + stockID;
     var response = await http.get(url);
@@ -143,42 +166,8 @@ class _MyHomePageState extends State<MyHomePage> {
       DataCell(Text(stockInfoList[10])),
     ]));
 
-    // Bad progress
-    String strStockInfo = stockInfoList[2] +
-        "  " +
-        stockInfoList[10] +
-        "\n" +
-        stockInfoList[3] +
-        "  " +
-        stockInfoList[11] +
-        "\n" +
-        stockInfoList[4] +
-        "  " +
-        stockInfoList[12] +
-        "\n" +
-        stockInfoList[5] +
-        "  " +
-        stockInfoList[13] +
-        "\n" +
-        stockInfoList[6] +
-        "  " +
-        stockInfoList[14] +
-        "\n" +
-        stockInfoList[7] +
-        "  " +
-        stockInfoList[15] +
-        "\n" +
-        stockInfoList[8] +
-        "  " +
-        stockInfoList[16] +
-        "\n" +
-        stockInfoList[9] +
-        "  " +
-        stockInfoList[17] +
-        "\n";
-
     setState(() {
-      stockContent = strStockInfo;
+      // stockContent = strStockInfo;
     });
   }
 
@@ -221,34 +210,34 @@ class _MyHomePageState extends State<MyHomePage> {
           //       "Enter a stock name",
           //       style: TextStyle(color: Colors.grey[800], fontSize: 30),
           //     )),
-          Container(
-            height: 130,
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  controller: getIDController,
-                  onChanged: (text) {
-                    print("$text");
-                  },
-                  decoration: InputDecoration(
-                      focusedErrorBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Colors.grey,
-                        width: 5,
-                      )),
-                      prefixIcon: Icon(Icons.save),
-                      labelText: 'Enter a stock Name'),
-                ),
-                SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: IconButton(
-                        iconSize: 50,
-                        icon: Icon(Icons.search),
-                        onPressed: getStockIDByName))
-              ],
-            ),
-          ),
+          // Container(
+          //   height: 130,
+          //   child: Column(
+          //     children: <Widget>[
+          //       TextField(
+          //         controller: getIDController,
+          //         onChanged: (text) {
+          //           print("$text");
+          //         },
+          //         decoration: InputDecoration(
+          //             focusedErrorBorder: UnderlineInputBorder(
+          //                 borderSide: BorderSide(
+          //               color: Colors.grey,
+          //               width: 5,
+          //             )),
+          //             prefixIcon: Icon(Icons.save),
+          //             labelText: 'Enter a stock Name'),
+          //       ),
+          //       SizedBox(
+          //           height: 50,
+          //           width: 50,
+          //           child: IconButton(
+          //               iconSize: 50,
+          //               icon: Icon(Icons.search),
+          //               onPressed: getStockIDByName))
+          //     ],
+          //   ),
+          // ),
           Container(
             height: 130,
             child: Column(
@@ -260,7 +249,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   decoration: InputDecoration(
                       prefixIcon: Icon(Icons.save),
-                      labelText: 'Enter a stock ID'),
+                      labelText: 'Enter a stock ID or Name'),
                 ),
                 SizedBox(
                     height: 50,
@@ -268,7 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: IconButton(
                         iconSize: 50,
                         icon: Icon(Icons.search),
-                        onPressed: getStockInfoByID))
+                        onPressed: searchStock))
               ],
             ),
           ),
