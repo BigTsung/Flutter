@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String stockContent = "";
   List stocks = [];
   // String stockName = '';
+  List closeDays = [];
 
   List<DataRow> _stockList = [
     // DataRow(cells: <DataCell>[
@@ -63,6 +64,23 @@ class _MyHomePageState extends State<MyHomePage> {
     //   DataCell(Text('')),
     // ]),
   ];
+
+  Future<bool> checkTodayIsOpenDay() async {
+    bool open = false;
+    ByteData data = await rootBundle.load("assets/OpenDate_2020.xlsx");
+    var bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    var excel = Excel.decodeBytes(bytes);
+
+    for (var table in excel.tables.keys) {
+      for (int i = 0; i < excel.tables[table].rows.length; i++) {
+        if (i > 0) closeDays.add(excel.tables[table].rows[i]);
+      }
+    }
+
+    // print("checkTodayIsOpenDay");
+    print(closeDays);
+    return open;
+  }
 
   Future<void> initStockTable() async {
     print("getStockIDbyName");
@@ -149,9 +167,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     print(element.text);
 
-    String resultStr = element.text.replaceFirst("期貨標的選擇權標的資料日期:", "");
-
-    // resultStr.replaceFirst(stockID, "");
+    String resultStr = element.text;
+    resultStr = resultStr.replaceFirst("期貨標的選擇權標的資料日期:", "");
+    resultStr = resultStr.replaceFirst("資料日期:", "");
     // print(resultStr);
 
     List<String> stockInfoList = resultStr.split(" ");
@@ -179,6 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     print("Init State!!");
     initStockTable();
+    checkTodayIsOpenDay();
     getThingsOnStartup().then((value) {
       print("Initial Done!!");
     });
