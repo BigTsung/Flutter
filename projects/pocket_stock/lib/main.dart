@@ -49,13 +49,28 @@ class Stock {
   Stock(this.name, this.id, this.eps, this.closingPrice);
 }
 
+class Today {
+  String year;
+  String month;
+  String day;
+  String weekday;
+
+  Today(this.year, this.month, this.day, this.weekday);
+
+  String getWeekday() {
+    return weekday;
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   final stockNamecontroller = TextEditingController();
   final getIDController = TextEditingController();
   String stockContent = "";
+  Today today;
+
   List stocks = [];
   // String stockName = '';
-  List closeDays = [];
+  List<String> closeDays = [];
 
   List<DataRow> _stockList = [
     // DataRow(cells: <DataCell>[
@@ -65,21 +80,57 @@ class _MyHomePageState extends State<MyHomePage> {
     // ]),
   ];
 
-  Future<bool> checkTodayIsOpenDay() async {
-    bool open = false;
+  Future<void> loadCloseDateData() async {
     ByteData data = await rootBundle.load("assets/OpenDate_2020.xlsx");
     var bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     var excel = Excel.decodeBytes(bytes);
 
     for (var table in excel.tables.keys) {
       for (int i = 0; i < excel.tables[table].rows.length; i++) {
-        if (i > 0) closeDays.add(excel.tables[table].rows[i]);
+        if (i > 0) {
+          // print(excel.tables[table].rows[i].toString());
+          String strCloseDate =
+              excel.tables[table].rows[i].toString().replaceFirst(".0", "");
+          // print(strCloseDate);
+
+          closeDays.add(strCloseDate);
+        }
       }
     }
 
-    // print("checkTodayIsOpenDay");
     print(closeDays);
-    return open;
+  }
+
+  String getToday() {
+    var now = new DateTime.now();
+
+    print("weekday: " + now.weekday.toString());
+
+    today = new Today(now.year.toString(), now.month.toString(),
+        now.day.toString(), now.weekday.toString());
+    // today = new Today(now.year.toString(), now.month.toString(), .nowday.toString(), now.weekday.toString()) as String;
+    String todayStr = now.year.toString().padLeft(4, '0') +
+        now.month.toString().padLeft(2, '0') +
+        now.day.toString().padLeft(2, '0');
+    print("today: " + todayStr);
+    return todayStr;
+  }
+
+  bool isCloseday() {
+    bool close = true;
+
+    String todayStr = getToday();
+
+    // default weekday == 6 || 7 is close day
+    if (today.weekday == "6" || today.weekday == "7") {
+      return true;
+    }
+
+    if (closeDays != null && todayStr != "") {
+      close = closeDays.any((e) => e.contains(todayStr));
+    }
+
+    return close;
   }
 
   Future<void> initStockTable() async {
@@ -197,15 +248,17 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     print("Init State!!");
     initStockTable();
-    checkTodayIsOpenDay();
+    loadCloseDateData();
+
     getThingsOnStartup().then((value) {
+      print(isCloseday());
       print("Initial Done!!");
     });
     super.initState();
   }
 
   Future getThingsOnStartup() async {
-    await Future.delayed(Duration(seconds: 10));
+    await Future.delayed(Duration(seconds: 5));
   }
 
 // =======================================================
@@ -222,41 +275,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: <Widget>[
-          // Container(
-          //     height: 100,
-          //     // color: Colors.amber[600],
-          //     child: Text(
-          //       "Enter a stock name",
-          //       style: TextStyle(color: Colors.grey[800], fontSize: 30),
-          //     )),
-          // Container(
-          //   height: 130,
-          //   child: Column(
-          //     children: <Widget>[
-          //       TextField(
-          //         controller: getIDController,
-          //         onChanged: (text) {
-          //           print("$text");
-          //         },
-          //         decoration: InputDecoration(
-          //             focusedErrorBorder: UnderlineInputBorder(
-          //                 borderSide: BorderSide(
-          //               color: Colors.grey,
-          //               width: 5,
-          //             )),
-          //             prefixIcon: Icon(Icons.save),
-          //             labelText: 'Enter a stock Name'),
-          //       ),
-          //       SizedBox(
-          //           height: 50,
-          //           width: 50,
-          //           child: IconButton(
-          //               iconSize: 50,
-          //               icon: Icon(Icons.search),
-          //               onPressed: getStockIDByName))
-          //     ],
-          //   ),
-          // ),
           Container(
             height: 130,
             child: Column(
