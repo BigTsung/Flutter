@@ -211,28 +211,38 @@ class _MyHomePageState extends State<MyHomePage> {
     var soup = Beautifulsoup(result);
 
     print(stockID);
+    print(soup);
 
     var classlinks = soup.find_all("table");
-    var element = classlinks.firstWhere(
-        (element) => element.className == "solid_1_padding_3_1_tbl");
+    var basicData = classlinks.firstWhere(
+        (basicData) => basicData.className == "solid_1_padding_3_1_tbl");
 
-    print(element.text);
-
-    String resultStr = element.text;
+    String resultStr = basicData.text;
     resultStr = resultStr.replaceFirst("期貨標的選擇權標的資料日期:", "");
+    resultStr = resultStr.replaceFirst("期貨標的資料日期:", "");
     resultStr = resultStr.replaceFirst("資料日期:", "");
     // print(resultStr);
 
     List<String> stockInfoList = resultStr.split(" ");
     stockInfoList.removeWhere((item) => item == "");
 
+    var dividendsData = classlinks.lastWhere((dividendsData) =>
+        dividendsData.className == "solid_1_padding_4_4_tbl");
+
+    print(dividendsData.text);
+
+    String dividendsStr = dividendsData.text;
+
+    List<String> stockDividendsList = dividendsStr.split(" ");
+    stockDividendsList.removeWhere((item) => item == "");
     // print("after : ");
-    print(stockInfoList);
+    print(stockDividendsList);
 
     _stockList.add(DataRow(cells: <DataCell>[
       DataCell(Text(stockInfoList[0])),
-      DataCell(Text(stockID)),
       DataCell(Text(stockInfoList[10])),
+      DataCell(Text(stockDividendsList[6])),
+      DataCell(Text(stockDividendsList[7]))
     ]));
 
     setState(() {
@@ -302,8 +312,9 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 130,
             child: DataTable(columns: [
               DataColumn(label: Text("名稱")),
-              DataColumn(label: Text("代號")),
-              DataColumn(label: Text("股價"))
+              DataColumn(label: Text("股價")),
+              DataColumn(label: Text("配息")),
+              DataColumn(label: Text("配股"))
             ], rows: _stockList),
           ),
         ],
