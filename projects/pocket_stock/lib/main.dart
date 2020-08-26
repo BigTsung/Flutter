@@ -41,12 +41,12 @@ class StockTable {
 }
 
 class Stock {
-  String name;
-  String id;
-  Float eps;
-  Float closingPrice;
+  String nameAndID;
+  String closingPrice;
+  String cashDividend;
+  String dividend;
 
-  Stock(this.name, this.id, this.eps, this.closingPrice);
+  Stock(this.nameAndID, this.closingPrice, this.cashDividend, this.dividend);
 }
 
 class Today {
@@ -72,13 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // String stockName = '';
   List<String> closeDays = [];
 
-  List<DataRow> _stockList = [
-    // DataRow(cells: <DataCell>[
-    //   DataCell(Text('')),
-    //   DataCell(Text('')),
-    //   DataCell(Text('')),
-    // ]),
-  ];
+  List<Stock> stockList = [];
 
   Future<void> loadCloseDateData() async {
     ByteData data = await rootBundle.load("assets/OpenDate_2020.xlsx");
@@ -239,17 +233,24 @@ class _MyHomePageState extends State<MyHomePage> {
     // print("after : ");
     print(stockDividendsList);
 
-    _stockList.add(DataRow(cells: <DataCell>[
-      DataCell(Text(stockInfoList[0], textAlign: TextAlign.center)),
-      DataCell(Text(stockInfoList[10], textAlign: TextAlign.center)),
-      DataCell(Text(stockDividendsList[6], textAlign: TextAlign.center)),
-      DataCell(Text(stockDividendsList[7], textAlign: TextAlign.center)),
-      DataCell(IconButton(icon: Icon(Icons.add), onPressed: () {}))
-    ]));
+    stockList.add(new Stock(stockInfoList[0], stockInfoList[10],
+        stockDividendsList[6], stockDividendsList[7]));
+
+    // _stockList.add(DataRow(cells: <DataCell>[
+    //   DataCell(Text(stockInfoList[0], textAlign: TextAlign.center)),
+    //   DataCell(Text(stockInfoList[10], textAlign: TextAlign.center)),
+    //   DataCell(Text(stockDividendsList[6], textAlign: TextAlign.center)),
+    //   DataCell(Text(stockDividendsList[7], textAlign: TextAlign.center)),
+    //   DataCell(IconButton(icon: Icon(Icons.add), onPressed: onclickAddedButton))
+    // ]));
 
     setState(() {
       // stockContent = strStockInfo;
     });
+  }
+
+  void onclickAddedButton() {
+    print("onclickAddedButton");
   }
 
 // =======================================================
@@ -270,7 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future getThingsOnStartup() async {
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 3));
   }
 
 // =======================================================
@@ -321,7 +322,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   DataColumn(label: Text("配股", textAlign: TextAlign.center)),
                   DataColumn(label: Text("加入", textAlign: TextAlign.center))
                 ],
-                rows: _stockList),
+                rows: stockList
+                    .map((e) => DataRow(cells: [
+                          DataCell(Text(e.nameAndID)),
+                          DataCell(Text(e.closingPrice)),
+                          DataCell(Text(e.cashDividend)),
+                          DataCell(Text(e.dividend)),
+                          DataCell(IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                print(e.nameAndID);
+                              }))
+                        ]))
+                    .toList()),
           ),
         ],
       ),
