@@ -226,6 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List<String> stockInfoList = resultStr.split(" ");
     stockInfoList.removeWhere((item) => item == "");
 
+    // the last "solid_1_padding_4_4_tbl" is target class
     var dividendsData = classlinks.lastWhere((dividendsData) =>
         dividendsData.className == "solid_1_padding_4_4_tbl");
 
@@ -239,10 +240,11 @@ class _MyHomePageState extends State<MyHomePage> {
     print(stockDividendsList);
 
     _stockList.add(DataRow(cells: <DataCell>[
-      DataCell(Text(stockInfoList[0])),
-      DataCell(Text(stockInfoList[10])),
-      DataCell(Text(stockDividendsList[6])),
-      DataCell(Text(stockDividendsList[7]))
+      DataCell(Text(stockInfoList[0], textAlign: TextAlign.center)),
+      DataCell(Text(stockInfoList[10], textAlign: TextAlign.center)),
+      DataCell(Text(stockDividendsList[6], textAlign: TextAlign.center)),
+      DataCell(Text(stockDividendsList[7], textAlign: TextAlign.center)),
+      DataCell(IconButton(icon: Icon(Icons.add), onPressed: () {}))
     ]));
 
     setState(() {
@@ -310,12 +312,16 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Container(
             height: 130,
-            child: DataTable(columns: [
-              DataColumn(label: Text("名稱")),
-              DataColumn(label: Text("股價")),
-              DataColumn(label: Text("配息")),
-              DataColumn(label: Text("配股"))
-            ], rows: _stockList),
+            child: DataTable(
+                columnSpacing: 45,
+                columns: [
+                  DataColumn(label: Text("名稱", textAlign: TextAlign.center)),
+                  DataColumn(label: Text("股價", textAlign: TextAlign.center)),
+                  DataColumn(label: Text("配息", textAlign: TextAlign.center)),
+                  DataColumn(label: Text("配股", textAlign: TextAlign.center)),
+                  DataColumn(label: Text("加入", textAlign: TextAlign.center))
+                ],
+                rows: _stockList),
           ),
         ],
       ),
