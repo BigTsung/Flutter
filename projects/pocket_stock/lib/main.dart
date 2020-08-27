@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -69,7 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Today today;
 
   List stocks = [];
-  // String stockName = '';
   List<String> closeDays = [];
 
   List<Stock> stockList = [];
@@ -82,10 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
     for (var table in excel.tables.keys) {
       for (int i = 0; i < excel.tables[table].rows.length; i++) {
         if (i > 0) {
-          // print(excel.tables[table].rows[i].toString());
           String strCloseDate =
               excel.tables[table].rows[i].toString().replaceFirst(".0", "");
-          // print(strCloseDate);
 
           closeDays.add(strCloseDate);
         }
@@ -102,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     today = new Today(now.year.toString(), now.month.toString(),
         now.day.toString(), now.weekday.toString());
-    // today = new Today(now.year.toString(), now.month.toString(), .nowday.toString(), now.weekday.toString()) as String;
+
     String todayStr = now.year.toString().padLeft(4, '0') +
         now.month.toString().padLeft(2, '0') +
         now.day.toString().padLeft(2, '0');
@@ -167,34 +162,29 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> searchStock() async {
     String input = stockNamecontroller.text;
-    print(isNumeric(input));
+
+    print(input);
+
     if (isNumeric(input)) {
       getStockInfoByID(input);
     } else {
-      print("input:" + input);
       String stockID = getStockIDByName(input);
       getStockInfoByID(stockID);
-      print(stockID.toString());
     }
   }
 
   String getStockIDByName(String targetName) {
-    // print(getIDController.text);
     String stockID;
     int targetIndex =
         stocks.indexWhere((element) => element.name == targetName);
-    // print(targetIndex);
     if (targetIndex > 0)
       stockID = stocks[targetIndex].id;
     else
       stockID = "Nore";
-
-    print(stockID);
     return stockID;
   }
 
   Future<void> getStockInfoByID(String stockID) async {
-    // String stockID = stockNamecontroller.text;
     var url =
         'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=' + stockID;
     var response = await http.get(url);
@@ -204,9 +194,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var soup = Beautifulsoup(result);
 
-    print(stockID);
-    print(soup);
-
     var classlinks = soup.find_all("table");
     var basicData = classlinks.firstWhere(
         (basicData) => basicData.className == "solid_1_padding_3_1_tbl");
@@ -215,7 +202,6 @@ class _MyHomePageState extends State<MyHomePage> {
     resultStr = resultStr.replaceFirst("期貨標的選擇權標的資料日期:", "");
     resultStr = resultStr.replaceFirst("期貨標的資料日期:", "");
     resultStr = resultStr.replaceFirst("資料日期:", "");
-    // print(resultStr);
 
     List<String> stockInfoList = resultStr.split(" ");
     stockInfoList.removeWhere((item) => item == "");
@@ -224,29 +210,15 @@ class _MyHomePageState extends State<MyHomePage> {
     var dividendsData = classlinks.lastWhere((dividendsData) =>
         dividendsData.className == "solid_1_padding_4_4_tbl");
 
-    print(dividendsData.text);
-
     String dividendsStr = dividendsData.text;
 
     List<String> stockDividendsList = dividendsStr.split(" ");
     stockDividendsList.removeWhere((item) => item == "");
-    // print("after : ");
-    print(stockDividendsList);
 
     stockList.add(new Stock(stockInfoList[0], stockInfoList[10],
         stockDividendsList[6], stockDividendsList[7]));
 
-    // _stockList.add(DataRow(cells: <DataCell>[
-    //   DataCell(Text(stockInfoList[0], textAlign: TextAlign.center)),
-    //   DataCell(Text(stockInfoList[10], textAlign: TextAlign.center)),
-    //   DataCell(Text(stockDividendsList[6], textAlign: TextAlign.center)),
-    //   DataCell(Text(stockDividendsList[7], textAlign: TextAlign.center)),
-    //   DataCell(IconButton(icon: Icon(Icons.add), onPressed: onclickAddedButton))
-    // ]));
-
-    setState(() {
-      // stockContent = strStockInfo;
-    });
+    setState(() {});
   }
 
   void onclickAddedButton() {
@@ -294,9 +266,6 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 TextField(
                   controller: stockNamecontroller,
-                  onChanged: (text) {
-                    print("$text");
-                  },
                   decoration: InputDecoration(
                       prefixIcon: Icon(Icons.save),
                       labelText: 'Enter a stock ID or Name'),
@@ -341,38 +310,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-// Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           children: <Widget>[
-//             TextField(
-//               controller: _controller,
-//               onChanged: (text) {
-//                 print("$text");
-//               },
-//               decoration: InputDecoration(hintText: 'Enter a stock Name'),
-//             ),
-//             IconButton(icon: Icon(Icons.search), onPressed: getStockIDbyName),
-//             TextField(
-//               controller: _controller,
-//               onChanged: (text) {
-//                 print("First text field: $text");
-//               },
-//               inputFormatters: [
-//                 WhitelistingTextInputFormatter(RegExp("[0-9]")),
-//               ],
-//               decoration: InputDecoration(hintText: 'Enter a stock ID'),
-//             ),
-//             IconButton(icon: Icon(Icons.search), onPressed: getStockInfoByID),
-//             Text("$stockContent"),
-//             // DataTable(columns: [
-//             //   DataColumn(label: Text("Item")),
-//             //   DataColumn(label: Text("Value")),
-//             // ], rows: [
-//             //   DataRow(cells: [DataCell(Text("data")), DataCell(Text("aaa"))]),
-//             //   // DataRow(cells: [DataCell(Text("anson")), DataCell(Text('data'))]),
-//             // ]),
-//           ],
-//         ),
-//       ),
