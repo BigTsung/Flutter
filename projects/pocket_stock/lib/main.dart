@@ -39,12 +39,14 @@ class StockTable {
 }
 
 class Stock {
-  String nameAndID;
+  String name;
+  String id;
   String closingPrice;
   String cashDividend;
   String dividend;
 
-  Stock(this.nameAndID, this.closingPrice, this.cashDividend, this.dividend);
+  Stock(
+      this.name, this.id, this.closingPrice, this.cashDividend, this.dividend);
 }
 
 class Today {
@@ -70,6 +72,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> closeDays = [];
 
   List<Stock> stockList = [];
+
+  List<Stock> pocket = [];
 
   Future<void> loadCloseDateData() async {
     ByteData data = await rootBundle.load("assets/OpenDate_2020.xlsx");
@@ -120,6 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return close;
+  }
+
+  void addStockToPocket(String id) {
+    pocket.add(stockList.firstWhere((element) => element.id == id));
   }
 
   Future<void> initStockTable() async {
@@ -184,6 +192,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return stockID;
   }
 
+  String getStockNameByID(String targetID) {
+    String stockName;
+    int targetIndex = stocks.indexWhere((element) => element.id == targetID);
+    if (targetIndex > 0)
+      stockName = stocks[targetIndex].name;
+    else
+      stockName = "Nore";
+    return stockName;
+  }
+
   Future<void> getStockInfoByID(String stockID) async {
     var url =
         'https://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID=' + stockID;
@@ -215,14 +233,21 @@ class _MyHomePageState extends State<MyHomePage> {
     List<String> stockDividendsList = dividendsStr.split(" ");
     stockDividendsList.removeWhere((item) => item == "");
 
-    stockList.add(new Stock(stockInfoList[0], stockInfoList[10],
-        stockDividendsList[6], stockDividendsList[7]));
+    stockList.add(new Stock(
+        getStockNameByID(stockID.replaceFirst("00", "")),
+        stockID,
+        stockInfoList[10],
+        stockDividendsList[6],
+        stockDividendsList[7]));
 
     setState(() {});
   }
 
-  void onclickAddedButton() {
+  void onclickAddedButton(String id) {
     print("onclickAddedButton");
+    addStockToPocket(id);
+    stockList.removeWhere((element) => element.id == id);
+    setState(() {});
   }
 
 // =======================================================
@@ -293,14 +318,39 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
                 rows: stockList
                     .map((e) => DataRow(cells: [
-                          DataCell(Text(e.nameAndID)),
+                          DataCell(Text(e.id + " " + e.name)),
                           DataCell(Text(e.closingPrice)),
                           DataCell(Text(e.cashDividend)),
                           DataCell(Text(e.dividend)),
                           DataCell(IconButton(
                               icon: Icon(Icons.add),
                               onPressed: () {
-                                print(e.nameAndID);
+                                onclickAddedButton(e.id);
+                              }))
+                        ]))
+                    .toList()),
+          ),
+          Container(
+            height: 130,
+            child: DataTable(
+                columnSpacing: 45,
+                columns: [
+                  DataColumn(label: Text("名稱", textAlign: TextAlign.center)),
+                  DataColumn(label: Text("股價", textAlign: TextAlign.center)),
+                  DataColumn(label: Text("配息", textAlign: TextAlign.center)),
+                  DataColumn(label: Text("配股", textAlign: TextAlign.center)),
+                  DataColumn(label: Text("加入", textAlign: TextAlign.center))
+                ],
+                rows: pocket
+                    .map((e) => DataRow(cells: [
+                          DataCell(Text(e.id + " " + e.name)),
+                          DataCell(Text(e.closingPrice)),
+                          DataCell(Text(e.cashDividend)),
+                          DataCell(Text(e.dividend)),
+                          DataCell(IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                // onclickAddedButton(e.id);
                               }))
                         ]))
                     .toList()),
