@@ -250,6 +250,12 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {});
   }
 
+  void onclickRemoveButton(String id) {
+    print("onclickRemoveButton");
+    pocket.removeWhere((element) => element.id == id);
+    setState(() {});
+  }
+
 // =======================================================
 // ====== InitState ======================================
 // =======================================================
@@ -308,7 +314,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             height: 130,
             child: DataTable(
-                columnSpacing: 45,
+                columnSpacing: 20,
                 columns: [
                   DataColumn(label: Text("名稱", textAlign: TextAlign.center)),
                   DataColumn(label: Text("股價", textAlign: TextAlign.center)),
@@ -333,7 +339,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             height: 130,
             child: DataTable(
-                columnSpacing: 45,
+                columnSpacing: 20,
                 columns: [
                   DataColumn(label: Text("名稱", textAlign: TextAlign.center)),
                   DataColumn(label: Text("股價", textAlign: TextAlign.center)),
@@ -350,7 +356,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           DataCell(IconButton(
                               icon: Icon(Icons.remove),
                               onPressed: () {
-                                // onclickAddedButton(e.id);
+                                onclickRemoveButton(e.id);
                               }))
                         ]))
                     .toList()),
