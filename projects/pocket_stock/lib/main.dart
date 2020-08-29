@@ -283,86 +283,158 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: Colors.grey[600],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: <Widget>[
-          Container(
-            height: 130,
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  controller: stockNamecontroller,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.save),
-                      labelText: 'Enter a stock ID or Name'),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.green[300],
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: Container(
+            padding: EdgeInsets.fromLTRB(5, 20, 0, 0),
+            child: AppBar(
+              automaticallyImplyLeading: false,
+              flexibleSpace: Text(""),
+              // centerTitle: true,
+              title: Text(
+                "Stock Pocket",
+                style: TextStyle(color: Colors.white, fontSize: 32),
+              ),
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+
+              // textTheme: ,
+              actions: <Widget>[
+                new SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: new IconButton(
+                      iconSize: 35,
+                      color: Colors.white70,
+                      disabledColor: Colors.white38,
+                      icon: Icon(Icons.add_alert),
+                      onPressed: () {}),
                 ),
-                SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: IconButton(
-                        iconSize: 50,
-                        icon: Icon(Icons.search),
-                        onPressed: searchStock))
               ],
             ),
           ),
-          Container(
-            height: 130,
-            child: DataTable(
-                columnSpacing: 20,
-                columns: [
-                  DataColumn(label: Text("名稱", textAlign: TextAlign.center)),
-                  DataColumn(label: Text("股價", textAlign: TextAlign.center)),
-                  DataColumn(label: Text("配息", textAlign: TextAlign.center)),
-                  DataColumn(label: Text("配股", textAlign: TextAlign.center)),
-                  DataColumn(label: Text("加入", textAlign: TextAlign.center))
-                ],
-                rows: stockList
-                    .map((e) => DataRow(cells: [
-                          DataCell(Text(e.id + " " + e.name)),
-                          DataCell(Text(e.closingPrice)),
-                          DataCell(Text(e.cashDividend)),
-                          DataCell(Text(e.dividend)),
-                          DataCell(IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                onclickAddedButton(e.id);
-                              }))
-                        ]))
-                    .toList()),
+        ),
+        body: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 100,
+                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                child: Center(
+                  child: TextField(
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Colors.white,
+                        ),
+                        // border: InputBorder.none,
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(35))),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(35))),
+                        fillColor: Colors.white24,
+                        filled: true,
+                        labelText: 'Enter a stock ID or Name',
+                        labelStyle: TextStyle(
+                            color: Colors.white,
+                            decorationColor: Colors.white)),
+                  ),
+                ),
+              )
+            ],
           ),
-          Container(
-            height: 130,
-            child: DataTable(
-                columnSpacing: 20,
-                columns: [
-                  DataColumn(label: Text("名稱", textAlign: TextAlign.center)),
-                  DataColumn(label: Text("股價", textAlign: TextAlign.center)),
-                  DataColumn(label: Text("配息", textAlign: TextAlign.center)),
-                  DataColumn(label: Text("配股", textAlign: TextAlign.center)),
-                  DataColumn(label: Text("加入", textAlign: TextAlign.center))
-                ],
-                rows: pocket
-                    .map((e) => DataRow(cells: [
-                          DataCell(Text(e.id + " " + e.name)),
-                          DataCell(Text(e.closingPrice)),
-                          DataCell(Text(e.cashDividend)),
-                          DataCell(Text(e.dividend)),
-                          DataCell(IconButton(
-                              icon: Icon(Icons.remove),
-                              onPressed: () {
-                                onclickRemoveButton(e.id);
-                              }))
-                        ]))
-                    .toList()),
-          ),
-        ],
+        ),
       ),
     );
   }
 }
+
+// appBar: AppBar(
+//       title: Text(widget.title),
+//       backgroundColor: Colors.grey[600],
+//     ),
+//     body: ListView(
+//       padding: const EdgeInsets.all(8),
+//       children: <Widget>[
+//         Container(
+//           height: 130,
+//           child: Column(
+//             children: <Widget>[
+//               TextField(
+//                 controller: stockNamecontroller,
+// decoration: InputDecoration(
+//     prefixIcon: Icon(Icons.save),
+//     labelText: 'Enter a stock ID or Name'),
+//               ),
+//               SizedBox(
+//                   height: 50,
+//                   width: 50,
+//                   child: IconButton(
+//                       iconSize: 50,
+//                       icon: Icon(Icons.search),
+//                       onPressed: searchStock))
+//             ],
+//           ),
+//         ),
+//         Container(
+//           height: 130,
+//           child: DataTable(
+//               columnSpacing: 20,
+//               columns: [
+//                 DataColumn(label: Text("名稱", textAlign: TextAlign.center)),
+//                 DataColumn(label: Text("股價", textAlign: TextAlign.center)),
+//                 DataColumn(label: Text("配息", textAlign: TextAlign.center)),
+//                 DataColumn(label: Text("配股", textAlign: TextAlign.center)),
+//                 DataColumn(label: Text("加入", textAlign: TextAlign.center))
+//               ],
+//               rows: stockList
+//                   .map((e) => DataRow(cells: [
+//                         DataCell(Text(e.id + " " + e.name)),
+//                         DataCell(Text(e.closingPrice)),
+//                         DataCell(Text(e.cashDividend)),
+//                         DataCell(Text(e.dividend)),
+//                         DataCell(IconButton(
+//                             icon: Icon(Icons.add),
+//                             onPressed: () {
+//                               onclickAddedButton(e.id);
+//                             }))
+//                       ]))
+//                   .toList()),
+//         ),
+//         Container(
+//           height: 130,
+//           child: DataTable(
+//               columnSpacing: 20,
+//               columns: [
+//                 DataColumn(label: Text("名稱", textAlign: TextAlign.center)),
+//                 DataColumn(label: Text("股價", textAlign: TextAlign.center)),
+//                 DataColumn(label: Text("配息", textAlign: TextAlign.center)),
+//                 DataColumn(label: Text("配股", textAlign: TextAlign.center)),
+//                 DataColumn(label: Text("加入", textAlign: TextAlign.center))
+//               ],
+//               rows: pocket
+//                   .map((e) => DataRow(cells: [
+//                         DataCell(Text(e.id + " " + e.name)),
+//                         DataCell(Text(e.closingPrice)),
+//                         DataCell(Text(e.cashDividend)),
+//                         DataCell(Text(e.dividend)),
+//                         DataCell(IconButton(
+//                             icon: Icon(Icons.remove),
+//                             onPressed: () {
+//                               onclickRemoveButton(e.id);
+//                             }))
+//                       ]))
+//                   .toList()),
+//         ),
+//       ],
+//     ),
