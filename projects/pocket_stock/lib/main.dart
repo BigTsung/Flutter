@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:beautifulsoup/beautifulsoup.dart';
@@ -278,6 +279,38 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 // =======================================================
+// ====== UI Widget ======================================
+// =======================================================
+
+  Widget appBar() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(5, 20, 0, 0),
+      child: new AppBar(
+        automaticallyImplyLeading: false,
+        // centerTitle: true,
+        title: Text(
+          "Stock Pocket",
+          style: TextStyle(color: Colors.white, fontSize: 32),
+        ),
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        actions: <Widget>[
+          new SizedBox(
+            height: 70,
+            width: 70,
+            child: new IconButton(
+                iconSize: 35,
+                color: Colors.white70,
+                disabledColor: Colors.white38,
+                icon: Icon(Icons.add_alert),
+                onPressed: () {}),
+          ),
+        ],
+      ),
+    );
+  }
+
+// =======================================================
 // ======= build =========================================
 // =======================================================
 
@@ -288,34 +321,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.green[300],
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(80.0),
-          child: Container(
-            padding: EdgeInsets.fromLTRB(5, 20, 0, 0),
-            child: AppBar(
-              automaticallyImplyLeading: false,
-              flexibleSpace: Text(""),
-              // centerTitle: true,
-              title: Text(
-                "Stock Pocket",
-                style: TextStyle(color: Colors.white, fontSize: 32),
-              ),
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
-
-              // textTheme: ,
-              actions: <Widget>[
-                new SizedBox(
-                  height: 70,
-                  width: 70,
-                  child: new IconButton(
-                      iconSize: 35,
-                      color: Colors.white70,
-                      disabledColor: Colors.white38,
-                      icon: Icon(Icons.add_alert),
-                      onPressed: () {}),
-                ),
-              ],
-            ),
-          ),
+          child: appBar(),
         ),
         body: Container(
           child: Column(
