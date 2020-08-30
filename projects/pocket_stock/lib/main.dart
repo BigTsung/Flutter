@@ -287,7 +287,6 @@ class _MyHomePageState extends State<MyHomePage> {
       padding: EdgeInsets.fromLTRB(5, 20, 0, 0),
       child: new AppBar(
         automaticallyImplyLeading: false,
-        // centerTitle: true,
         title: Text(
           "Stock Pocket",
           style: TextStyle(color: Colors.white, fontSize: 32),
@@ -314,6 +313,8 @@ class _MyHomePageState extends State<MyHomePage> {
 // ======= build =========================================
 // =======================================================
 
+  List<bool> _selections = List.generate(3, (_) => false);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -325,6 +326,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Container(
           child: Column(
+            // shrinkWrap: false,
+            // primary: false,
+            // physics: NeverScrollableScrollPhysics(),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
                 height: 100,
@@ -356,7 +361,150 @@ class _MyHomePageState extends State<MyHomePage> {
                             decorationColor: Colors.white)),
                   ),
                 ),
+              ),
+              Container(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                    child: FlatButton(
+                      onPressed: () {},
+                      child:
+                          Text("Browse", style: TextStyle(color: Colors.white)),
+                      // color: Colors.amber,
+                    ),
+                  ),
+                  Expanded(
+                    child: FlatButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Pocket",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      // color: Colors.white,
+                    ),
+                  ),
+                  Expanded(
+                    child: FlatButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Setting",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      // color: Colors.white,
+                    ),
+                  )
+                ],
+              )),
+              Container(
+                child: Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(30),
+                    children: <Widget>[
+                      Container(
+                        height: 100,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text("A"),
+                          color: Colors.green,
+                        ),
+                      ),
+                      Container(
+                        height: 100,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text("A"),
+                          color: Colors.green[200],
+                        ),
+                      ),
+                      Container(
+                        height: 100,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text("A"),
+                          color: Colors.green,
+                        ),
+                      ),
+                      Container(
+                        height: 100,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text("A"),
+                          color: Colors.green[200],
+                        ),
+                      ),
+                      Container(
+                        height: 100,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text("A"),
+                          color: Colors.green,
+                        ),
+                      ),
+                      Container(
+                        height: 100,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text("A"),
+                          color: Colors.green[200],
+                        ),
+                      ),
+                      Container(
+                        height: 100,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text("A"),
+                          color: Colors.green,
+                        ),
+                      ),
+                      Container(
+                        height: 100,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text("A"),
+                          color: Colors.green[200],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               )
+              // Container(
+              //   child: ListView(
+              //     // mainAxisAlignment: MainAxisAlignment.center,
+              //     // crossAxisAlignment: CrossAxisAlignment.stretch,
+              //     scrollDirection: Axis.vertical,
+              //     children: [
+              //       const Text("data")
+              //       // Container(
+              //       //   height: 100,
+              //       //   child: FlatButton(
+              //       //     onPressed: () {},
+              //       //     child: Text("A"),
+              //       //     color: Colors.amber,
+              //       //   ),
+              //       // ),
+              //       // Container(
+              //       //   height: 100,
+              //       //   child: FlatButton(
+              //       //     onPressed: () {},
+              //       //     child: Text("B"),
+              //       //     color: Colors.white,
+              //       //   ),
+              //       // ),
+              //       // Container(
+              //       //   height: 200,
+              //       //   child: FlatButton(
+              //       //     onPressed: () {},
+              //       //     child: Text("C"),
+              //       //     color: Colors.amber,
+              //       //   ),
+              //       // )
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),
