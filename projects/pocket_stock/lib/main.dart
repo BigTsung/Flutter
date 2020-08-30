@@ -336,6 +336,40 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget tabBar() {
+    return Container(
+        child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Expanded(
+          child: FlatButton(
+            onPressed: () {},
+            child: Text("Browse", style: TextStyle(color: Colors.white)),
+          ),
+        ),
+        Expanded(
+          child: FlatButton(
+            onPressed: () {},
+            child: Text(
+              "Pocket",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        Expanded(
+          child: FlatButton(
+            onPressed: () {},
+            child: Text(
+              "Setting",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        )
+      ],
+    ));
+  }
+
 // =======================================================
 // ======= build =========================================
 // =======================================================
@@ -355,115 +389,172 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               searchBox(),
-              Container(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
+              tabBar(),
+              SizedBox(height: 20),
+              Expanded(
+                  child: Stack(
                 children: <Widget>[
-                  Expanded(
-                    child: FlatButton(
-                      onPressed: () {},
-                      child:
-                          Text("Browse", style: TextStyle(color: Colors.white)),
-                    ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            topRight: Radius.circular(40))),
                   ),
-                  Expanded(
-                    child: FlatButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Pocket",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: FlatButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Setting",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )
+                  ListView.builder(
+                      itemCount: 3,
+                      itemBuilder: (context, index) => StockCard(
+                            stockIndex: index,
+                          ))
                 ],
-              )),
-              Container(
-                child: Expanded(
-                  child: ListView(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(30),
-                    children: <Widget>[
-                      Container(
-                        height: 100,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text("A"),
-                          color: Colors.green,
-                        ),
-                      ),
-                      Container(
-                        height: 100,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text("A"),
-                          color: Colors.green[200],
-                        ),
-                      ),
-                      Container(
-                        height: 100,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text("A"),
-                          color: Colors.green,
-                        ),
-                      ),
-                      Container(
-                        height: 100,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text("A"),
-                          color: Colors.green[200],
-                        ),
-                      ),
-                      Container(
-                        height: 100,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text("A"),
-                          color: Colors.green,
-                        ),
-                      ),
-                      Container(
-                        height: 100,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text("A"),
-                          color: Colors.green[200],
-                        ),
-                      ),
-                      Container(
-                        height: 100,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text("A"),
-                          color: Colors.green,
-                        ),
-                      ),
-                      Container(
-                        height: 100,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text("A"),
-                          color: Colors.green[200],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
+              ))
+              // Container(
+              //   child: Expanded(
+              //     child: ListView(
+              //       shrinkWrap: true,
+              //       padding: const EdgeInsets.all(30),
+              //       children: <Widget>[
+              //         Container(
+              //           height: 100,
+              //           child: FlatButton(
+              //             onPressed: () {},
+              //             child: Text("A"),
+              //             color: Colors.green,
+              //           ),
+              //         ),
+              //         Container(
+              //           height: 100,
+              //           child: FlatButton(
+              //             onPressed: () {},
+              //             child: Text("A"),
+              //             color: Colors.green[200],
+              //           ),
+              //         ),
+              //         Container(
+              //           height: 100,
+              //           child: FlatButton(
+              //             onPressed: () {},
+              //             child: Text("A"),
+              //             color: Colors.green,
+              //           ),
+              //         ),
+              //         Container(
+              //           height: 100,
+              //           child: FlatButton(
+              //             onPressed: () {},
+              //             child: Text("A"),
+              //             color: Colors.green[200],
+              //           ),
+              //         ),
+              //         Container(
+              //           height: 100,
+              //           child: FlatButton(
+              //             onPressed: () {},
+              //             child: Text("A"),
+              //             color: Colors.green,
+              //           ),
+              //         ),
+              //         Container(
+              //           height: 100,
+              //           child: FlatButton(
+              //             onPressed: () {},
+              //             child: Text("A"),
+              //             color: Colors.green[200],
+              //           ),
+              //         ),
+              //         Container(
+              //           height: 100,
+              //           child: FlatButton(
+              //             onPressed: () {},
+              //             child: Text("A"),
+              //             color: Colors.green,
+              //           ),
+              //         ),
+              //         Container(
+              //           height: 100,
+              //           child: FlatButton(
+              //             onPressed: () {},
+              //             child: Text("A"),
+              //             color: Colors.green[200],
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class StockCard extends StatelessWidget {
+  const StockCard({Key key, this.stockIndex}) : super(key: key);
+
+  final int stockIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      height: 160,
+      // color: Colors.green[400],
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: <Widget>[
+          Container(
+            height: 136,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(22),
+                color: Colors.green[400],
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 10.0,
+                      offset: Offset(3.0, 3.0)),
+                ]),
+            child: Container(
+              margin: EdgeInsets.only(bottom: 8),
+              decoration: BoxDecoration(
+                  color: Colors.white54,
+                  borderRadius: BorderRadius.circular(22)),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              height: 160,
+              width: 200,
+              child: Image.asset(
+                "name",
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Positioned(
+              bottom: 0,
+              left: 0,
+              child: SizedBox(
+                height: 136,
+                width: size.width - 200,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: Text(
+                        "data",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                    )
+                  ],
+                ),
+              ))
+        ],
       ),
     );
   }
