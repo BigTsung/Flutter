@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -284,7 +285,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget appBar() {
     return Container(
-      padding: EdgeInsets.fromLTRB(5, 20, 0, 0),
+      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: new AppBar(
         automaticallyImplyLeading: false,
         title: Text(
@@ -309,15 +310,40 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget searchBox() {
+    return Container(
+      margin: EdgeInsets.all(20),
+      padding: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20 / 4,
+      ),
+      decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.4),
+          borderRadius: BorderRadius.circular(20)),
+      child: TextField(
+        onChanged: null,
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+            hintText: 'Enter a stock ID or Name',
+            hintStyle: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+
 // =======================================================
 // ======= build =========================================
 // =======================================================
 
-  List<bool> _selections = List.generate(3, (_) => false);
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      bottom: false,
       child: Scaffold(
         backgroundColor: Colors.green[300],
         appBar: PreferredSize(
@@ -326,42 +352,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Container(
           child: Column(
-            // shrinkWrap: false,
-            // primary: false,
-            // physics: NeverScrollableScrollPhysics(),
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                height: 100,
-                padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                child: Center(
-                  child: TextField(
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Colors.white,
-                        ),
-                        // border: InputBorder.none,
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(35))),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(35))),
-                        fillColor: Colors.white24,
-                        filled: true,
-                        labelText: 'Enter a stock ID or Name',
-                        labelStyle: TextStyle(
-                            color: Colors.white,
-                            decorationColor: Colors.white)),
-                  ),
-                ),
-              ),
+              searchBox(),
               Container(
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -372,7 +365,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () {},
                       child:
                           Text("Browse", style: TextStyle(color: Colors.white)),
-                      // color: Colors.amber,
                     ),
                   ),
                   Expanded(
@@ -382,7 +374,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         "Pocket",
                         style: TextStyle(color: Colors.white),
                       ),
-                      // color: Colors.white,
                     ),
                   ),
                   Expanded(
@@ -392,7 +383,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         "Setting",
                         style: TextStyle(color: Colors.white),
                       ),
-                      // color: Colors.white,
                     ),
                   )
                 ],
@@ -471,40 +461,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
               )
-              // Container(
-              //   child: ListView(
-              //     // mainAxisAlignment: MainAxisAlignment.center,
-              //     // crossAxisAlignment: CrossAxisAlignment.stretch,
-              //     scrollDirection: Axis.vertical,
-              //     children: [
-              //       const Text("data")
-              //       // Container(
-              //       //   height: 100,
-              //       //   child: FlatButton(
-              //       //     onPressed: () {},
-              //       //     child: Text("A"),
-              //       //     color: Colors.amber,
-              //       //   ),
-              //       // ),
-              //       // Container(
-              //       //   height: 100,
-              //       //   child: FlatButton(
-              //       //     onPressed: () {},
-              //       //     child: Text("B"),
-              //       //     color: Colors.white,
-              //       //   ),
-              //       // ),
-              //       // Container(
-              //       //   height: 200,
-              //       //   child: FlatButton(
-              //       //     onPressed: () {},
-              //       //     child: Text("C"),
-              //       //     color: Colors.amber,
-              //       //   ),
-              //       // )
-              //     ],
-              //   ),
-              // )
             ],
           ),
         ),
