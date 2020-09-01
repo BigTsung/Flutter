@@ -402,86 +402,12 @@ class _MyHomePageState extends State<MyHomePage> {
                             topRight: Radius.circular(40))),
                   ),
                   ListView.builder(
-                      itemCount: 3,
+                      itemCount: 2,
                       itemBuilder: (context, index) => StockCard(
                             stockIndex: index,
                           ))
                 ],
               ))
-              // Container(
-              //   child: Expanded(
-              //     child: ListView(
-              //       shrinkWrap: true,
-              //       padding: const EdgeInsets.all(30),
-              //       children: <Widget>[
-              //         Container(
-              //           height: 100,
-              //           child: FlatButton(
-              //             onPressed: () {},
-              //             child: Text("A"),
-              //             color: Colors.green,
-              //           ),
-              //         ),
-              //         Container(
-              //           height: 100,
-              //           child: FlatButton(
-              //             onPressed: () {},
-              //             child: Text("A"),
-              //             color: Colors.green[200],
-              //           ),
-              //         ),
-              //         Container(
-              //           height: 100,
-              //           child: FlatButton(
-              //             onPressed: () {},
-              //             child: Text("A"),
-              //             color: Colors.green,
-              //           ),
-              //         ),
-              //         Container(
-              //           height: 100,
-              //           child: FlatButton(
-              //             onPressed: () {},
-              //             child: Text("A"),
-              //             color: Colors.green[200],
-              //           ),
-              //         ),
-              //         Container(
-              //           height: 100,
-              //           child: FlatButton(
-              //             onPressed: () {},
-              //             child: Text("A"),
-              //             color: Colors.green,
-              //           ),
-              //         ),
-              //         Container(
-              //           height: 100,
-              //           child: FlatButton(
-              //             onPressed: () {},
-              //             child: Text("A"),
-              //             color: Colors.green[200],
-              //           ),
-              //         ),
-              //         Container(
-              //           height: 100,
-              //           child: FlatButton(
-              //             onPressed: () {},
-              //             child: Text("A"),
-              //             color: Colors.green,
-              //           ),
-              //         ),
-              //         Container(
-              //           height: 100,
-              //           child: FlatButton(
-              //             onPressed: () {},
-              //             child: Text("A"),
-              //             color: Colors.green[200],
-              //           ),
-              //         )
-              //       ],
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ),
@@ -498,10 +424,10 @@ class StockCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print("Size:      " + size.toString());
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       height: 160,
-      // color: Colors.green[400],
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: <Widget>[
@@ -509,7 +435,7 @@ class StockCard extends StatelessWidget {
             height: 136,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(22),
-                color: Colors.green[400],
+                color: Colors.green[700],
                 boxShadow: [
                   BoxShadow(
                       color: Colors.grey,
@@ -524,32 +450,18 @@ class StockCard extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              height: 160,
-              width: 200,
-              child: Image.asset(
-                "name",
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Positioned(
-              bottom: 0,
-              left: 0,
+              left: -size.width / 2,
               child: SizedBox(
                 height: 136,
-                width: size.width - 200,
+                width: size.width,
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 0),
-                      child: Text(
-                        "data",
-                        style: Theme.of(context).textTheme.button,
-                      ),
+                      padding: const EdgeInsets.fromLTRB(80, 15, 0, 0),
+                      child: Text("data",
+                          style: TextStyle(color: Colors.white70, fontSize: 25)
+                          // style: Theme.of(context).textTheme.button,
+                          ),
                     )
                   ],
                 ),
