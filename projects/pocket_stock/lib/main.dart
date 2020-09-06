@@ -450,14 +450,15 @@ class StockCard extends StatelessWidget {
             ),
           ),
           Positioned(
-              left: -size.width / 2,
+              left: 0,
+              top: -20,
               child: SizedBox(
                 height: 136,
                 width: size.width,
-                child: Column(
+                child: Row(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(80, 15, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(20, 136 / 2, 0, 0),
                       child: Text("data",
                           style: TextStyle(color: Colors.white70, fontSize: 25)
                           // style: Theme.of(context).textTheme.button,
