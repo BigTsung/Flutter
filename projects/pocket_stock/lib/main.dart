@@ -312,7 +312,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget searchBox() {
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
       padding: EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20 / 4,
@@ -320,18 +320,30 @@ class _MyHomePageState extends State<MyHomePage> {
       decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.4),
           borderRadius: BorderRadius.circular(20)),
-      child: TextField(
-        onChanged: null,
-        style: TextStyle(color: Colors.white),
-        decoration: InputDecoration(
-            enabledBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            icon: Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            hintText: 'Enter a stock ID or Name',
-            hintStyle: TextStyle(color: Colors.white)),
+      child: Column(
+        children: [
+          TextField(
+            controller: stockNamecontroller,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                // icon: Icon(
+                //   Icons.search,
+                //   color: Colors.white,
+                // ),
+                hintText: 'Enter a stock ID or Name',
+                hintStyle: TextStyle(color: Colors.white)),
+          ),
+          IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                searchStock();
+              })
+        ],
       ),
     );
   }
@@ -402,9 +414,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             topRight: Radius.circular(40))),
                   ),
                   ListView.builder(
-                      itemCount: 2,
+                      itemCount: stockList.length,
                       itemBuilder: (context, index) => StockCard(
                             stockIndex: index,
+                            stock: stockList[index],
                           ))
                 ],
               ))
@@ -417,9 +430,11 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class StockCard extends StatelessWidget {
-  const StockCard({Key key, this.stockIndex}) : super(key: key);
+  const StockCard({Key key, this.stockIndex, this.stock}) : super(key: key);
 
   final int stockIndex;
+
+  final Stock stock;
 
   @override
   Widget build(BuildContext context) {
@@ -434,14 +449,15 @@ class StockCard extends StatelessWidget {
           Container(
             height: 136,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(22),
-                color: Colors.green[700],
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 10.0,
-                      offset: Offset(3.0, 3.0)),
-                ]),
+              borderRadius: BorderRadius.circular(22),
+              color: Colors.green[700],
+              // boxShadow: [
+              //   BoxShadow(
+              //       color: Colors.grey,
+              //       blurRadius: 10.0,
+              //       offset: Offset(10.0, 10.0)),
+              // ]
+            ),
             child: Container(
               margin: EdgeInsets.only(bottom: 8),
               decoration: BoxDecoration(
@@ -459,10 +475,94 @@ class StockCard extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 136 / 2, 0, 0),
-                      child: Text("data",
-                          style: TextStyle(color: Colors.white70, fontSize: 25)
+                      child: Text(stock.name,
+                          style: TextStyle(color: Colors.white70, fontSize: 20)
                           // style: Theme.of(context).textTheme.button,
                           ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 136 / 2, 0, 0),
+                      child: Row(
+                        children: [
+                          Column(
+                            children: [
+                              Text("CLOSE",
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 15)
+                                  // style: Theme.of(context).textTheme.button,
+                                  ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Text(stock.closingPrice,
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 15)
+                                  // style: Theme.of(context).textTheme.button,
+                                  ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Column(
+                            children: [
+                              Text("CASH_D",
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 15)
+                                  // style: Theme.of(context).textTheme.button,
+                                  ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Text(stock.cashDividend,
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 15)
+                                  // style: Theme.of(context).textTheme.button,
+                                  ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Column(
+                            children: [
+                              Text("STOCK_D",
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 15)
+                                  // style: Theme.of(context).textTheme.button,
+                                  ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Text(stock.dividend,
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 15)
+                                  // style: Theme.of(context).textTheme.button,
+                                  ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Column(
+                            children: [
+                              Text("PER",
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 15)
+                                  // style: Theme.of(context).textTheme.button,
+                                  ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Text("PER",
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 15)
+                                  // style: Theme.of(context).textTheme.button,
+                                  ),
+                            ],
+                          ),
+                        ],
+                      ),
                     )
                   ],
                 ),
